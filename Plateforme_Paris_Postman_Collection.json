@@ -1,0 +1,524 @@
+{
+  "info": {
+    "name": "Plateforme Municipale Paris",
+    "description": "Collection complète des endpoints API du backend Spring Boot",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentification",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@paris.fr\",\n  \"password\": \"admin\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"agent@paris.fr\",\n  \"password\": \"agent\",\n  \"role\": \"agent\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Citoyen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"citoyen@example.com\",\n  \"password\": \"citoyen\",\n  \"role\": \"citoyen\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Register Citoyen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Durand\",\n  \"prenom\": \"Sophie\",\n  \"email\": \"sophie.durand@example.com\",\n  \"password\": \"password123\",\n  \"commune\": \"15ème arrondissement\",\n  \"age\": 28,\n  \"telephone\": \"0612345678\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Municipalités",
+      "item": [
+        {
+          "name": "GET Liste Municipalités",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/municipalites?page=0&limit=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "municipalites"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "limit", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Municipalité par ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/municipalites/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "municipalites", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Créer Municipalité",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Mairie du 20ème arrondissement\",\n  \"region\": \"Île-de-France\",\n  \"codePostal\": \"75020\",\n  \"budgetAnnuel\": 9800000,\n  \"tauxSatisfaction\": 85,\n  \"dateCreation\": \"2020-03-10\",\n  \"statut\": \"ACTIVE\",\n  \"adresse\": \"6 Place Gambetta, 75020 Paris\",\n  \"telephone\": \"01 43 15 20 20\",\n  \"email\": \"contact@mairie20.paris.fr\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/municipalites",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "municipalites"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Agents Municipaux",
+      "item": [
+        {
+          "name": "GET Liste Agents",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/agents?page=0&limit=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "agents"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "limit", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Agent par ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/agents/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "agents", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Créer Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"pierre.moreau\",\n  \"email\": \"pierre.moreau@paris.fr\",\n  \"password\": \"password123\",\n  \"nom\": \"Moreau\",\n  \"prenom\": \"Pierre\",\n  \"telephone\": \"0143669920\",\n  \"municipalite\": {\n    \"id\": 1\n  },\n  \"poste\": \"Coordinateur social\",\n  \"dateEmbauche\": \"2023-09-01\",\n  \"statut\": \"ACTIF\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/agents",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "agents"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Citoyens",
+      "item": [
+        {
+          "name": "GET Liste Citoyens",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/citoyens?page=0&limit=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "citoyens"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "limit", "value": "20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Citoyen par ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/citoyens/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "citoyens", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Projets",
+      "item": [
+        {
+          "name": "GET Liste Projets",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/v1/projets?page=0&limit=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "projets"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "limit", "value": "10"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Projet par ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/v1/projets/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "projets", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Créer Projet",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titre\": \"Jardins partagés du 15ème\",\n  \"description\": \"Création d'espaces verts communautaires pour favoriser le lien social\",\n  \"dateDebut\": \"2024-03-01\",\n  \"dateFin\": \"2024-12-31\",\n  \"statut\": \"ACTIF\",\n  \"budget\": 25000,\n  \"responsable\": {\n    \"id\": 1\n  },\n  \"municipalite\": {\n    \"id\": 1\n  },\n  \"arrondissement\": \"15ème\",\n  \"nombreParticipants\": 0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/projets",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "projets"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Réclamations",
+      "item": [
+        {
+          "name": "GET Liste Réclamations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/reclamations?page=0&limit=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "reclamations"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "limit", "value": "20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Réclamation par ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/reclamations/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "reclamations", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Créer Réclamation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sujet\": \"Éclairage défaillant\",\n  \"description\": \"L'éclairage public ne fonctionne plus depuis 3 jours\",\n  \"type\": \"ECLAIRAGE\",\n  \"priorite\": \"HAUTE\",\n  \"citoyen\": {\n    \"id\": 1\n  },\n  \"municipalite\": {\n    \"id\": 1\n  },\n  \"localisation\": \"Rue de la Convention, 75015 Paris\",\n  \"arrondissement\": \"15ème\",\n  \"statut\": \"NOUVELLE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/reclamations",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "reclamations"]
+            }
+          }
+        },
+        {
+          "name": "PATCH Changer Statut Réclamation",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8081/api/v1/reclamations/1/statut?statut=EN_COURS&commentaires=Intervention programmée",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "reclamations", "1", "statut"],
+              "query": [
+                {"key": "statut", "value": "EN_COURS"},
+                {"key": "commentaires", "value": "Intervention programmée"}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Établissements",
+      "item": [
+        {
+          "name": "GET Liste Établissements",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/v1/etablissements?page=0&limit=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "etablissements"],
+              "query": [
+                {"key": "page", "value": "0"},
+                {"key": "limit", "value": "20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Établissement par ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/v1/etablissements/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "etablissements", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Créer Établissement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"École élémentaire Voltaire\",\n  \"type\": \"ECOLE\",\n  \"adresse\": \"25 Rue Voltaire, 75015 Paris\",\n  \"telephone\": \"0145321567\",\n  \"email\": \"contact@ecole-voltaire15.fr\",\n  \"horaires\": \"Lun-Ven 8h30-16h30\",\n  \"description\": \"École élémentaire publique avec cantine\",\n  \"arrondissement\": \"15ème\",\n  \"municipalite\": {\n    \"id\": 1\n  },\n  \"statut\": \"OUVERT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/etablissements",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "etablissements"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
+
