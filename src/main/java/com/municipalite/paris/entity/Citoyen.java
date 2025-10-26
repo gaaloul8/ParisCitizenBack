@@ -85,9 +85,10 @@ public class Citoyen {
     @JsonIgnore
     private List<Feedback> feedbacks = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "participants")
-    @JsonIgnore
-    private List<Projet> projetsParticipes = new ArrayList<>();
+    // Relation supprimée car la relation Many-to-Many avec les projets a été supprimée
+    // @ManyToMany(mappedBy = "participants")
+    // @JsonIgnore
+    // private List<Projet> projetsParticipes = new ArrayList<>();
 
     public enum StatutCitoyen {
         ACTIF, INACTIF, SUSPENDU

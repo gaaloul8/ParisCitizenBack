@@ -2,6 +2,7 @@ package com.municipalite.paris.service;
 
 import com.municipalite.paris.entity.Projet;
 import com.municipalite.paris.entity.Citoyen;
+import com.municipalite.paris.dto.CreateProjetRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,12 +20,15 @@ public interface ProjetService {
     Page<Projet> findByStatut(Projet.StatutProjet statut, Pageable pageable);
     Page<Projet> findByMunicipaliteId(Long municipaliteId, Pageable pageable);
     Page<Projet> findByResponsableId(Long responsableId, Pageable pageable);
-    Page<Projet> findProjetsByCitoyenId(Long citoyenId, Pageable pageable);
+    // Méthode supprimée car la relation Many-to-Many avec les citoyens a été supprimée
+    // Page<Projet> findProjetsByCitoyenId(Long citoyenId, Pageable pageable);
     Page<Projet> findByArrondissement(String arrondissement, Pageable pageable);
     Page<Projet> findByPeriod(LocalDate startDate, LocalDate endDate, Pageable pageable);
-    Projet addParticipant(Long projetId, Long citoyenId);
-    Projet removeParticipant(Long projetId, Long citoyenId);
-    List<Citoyen> getParticipants(Long projetId);
+    // Méthodes supprimées car la relation Many-to-Many avec les citoyens a été supprimée
+    // Projet addParticipant(Long projetId, Long citoyenId);
+    // Projet removeParticipant(Long projetId, Long citoyenId);
+    // List<Citoyen> getParticipants(Long projetId);
+    Projet createProjet(CreateProjetRequest request);
 }
 
 

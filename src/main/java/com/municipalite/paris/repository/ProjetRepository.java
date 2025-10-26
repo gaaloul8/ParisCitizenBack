@@ -40,11 +40,24 @@ public interface ProjetRepository extends JpaRepository<Projet, Long> {
     @Query("SELECT p FROM Projet p WHERE p.dateDebut <= :date AND p.dateFin >= :date AND p.statut = 'ACTIF'")
     List<Projet> findActiveProjectsAtDate(@Param("date") LocalDate date);
     
-    @Query("SELECT p FROM Projet p JOIN p.participants c WHERE c.id = :citoyenId")
-    Page<Projet> findProjetsByCitoyenId(@Param("citoyenId") Long citoyenId, Pageable pageable);
+    // Méthode supprimée car la relation Many-to-Many avec les citoyens a été supprimée
+    // @Query("SELECT p FROM Projet p JOIN p.participants c WHERE c.id = :citoyenId")
+    // Page<Projet> findProjetsByCitoyenId(@Param("citoyenId") Long citoyenId, Pageable pageable);
     
     @Query("SELECT p FROM Projet p WHERE p.dateDebut >= :startDate AND p.dateFin <= :endDate")
     Page<Projet> findByPeriod(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, Pageable pageable);
+    
+    // Méthode pour trouver les projets créés par un citoyen
+    @Query("SELECT p FROM Projet p WHERE p.createur.id = :citoyenId")
+    List<Projet> findByCreateurId(@Param("citoyenId") Long citoyenId);
+    
+    // Méthode pour trouver tous les projets d'une municipalité (pas paginée)
+    @Query("SELECT p FROM Projet p WHERE p.municipalite.id = :municipaliteId")
+    List<Projet> findByMunicipaliteId(@Param("municipaliteId") Long municipaliteId);
+    
+    // Méthode pour trouver tous les projets d'un responsable (pas paginée)
+    @Query("SELECT p FROM Projet p WHERE p.responsable.id = :responsableId")
+    List<Projet> findByResponsableIdList(@Param("responsableId") Long responsableId);
 }
 
 

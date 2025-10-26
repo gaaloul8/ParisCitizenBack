@@ -2,6 +2,7 @@ package com.municipalite.paris.controller;
 
 import com.municipalite.paris.dto.response.ApiResponse;
 import com.municipalite.paris.dto.response.PageResponse;
+import com.municipalite.paris.dto.CreateProjetRequest;
 import com.municipalite.paris.entity.Projet;
 import com.municipalite.paris.entity.Citoyen;
 import com.municipalite.paris.service.ProjetService;
@@ -51,8 +52,8 @@ public class ProjetController {
 
     @PostMapping
     // @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')") // Temporairement désactivé pour les tests
-    public ResponseEntity<ApiResponse<Projet>> createProjet(@RequestBody Projet projet) {
-        Projet created = projetService.save(projet);
+    public ResponseEntity<ApiResponse<Projet>> createProjet(@RequestBody CreateProjetRequest request) {
+        Projet created = projetService.createProjet(request);
         return ResponseEntity.ok(ApiResponse.success("Projet créé avec succès", created));
     }
 
@@ -90,6 +91,8 @@ public class ProjetController {
         return ResponseEntity.ok(ApiResponse.success("Statut mis à jour", updated));
     }
 
+    // Endpoints supprimés car la relation Many-to-Many avec les citoyens a été supprimée
+    /*
     @PostMapping("/{projetId}/participants/{citoyenId}")
     public ResponseEntity<ApiResponse<Projet>> addParticipant(
             @PathVariable Long projetId,
@@ -105,7 +108,10 @@ public class ProjetController {
         Projet updated = projetService.removeParticipant(projetId, citoyenId);
         return ResponseEntity.ok(ApiResponse.success("Participant retiré", updated));
     }
+    */
 
+    // Endpoint supprimé car la relation Many-to-Many avec les citoyens a été supprimée
+    /*
     @GetMapping("/citoyen/{citoyenId}")
     public ResponseEntity<PageResponse<Projet>> getProjetsByCitoyen(
             @PathVariable Long citoyenId,
@@ -116,6 +122,7 @@ public class ProjetController {
         Page<Projet> result = projetService.findProjetsByCitoyenId(citoyenId, pageable);
         return ResponseEntity.ok(PageResponse.of(result.getContent(), result.getTotalElements(), page, limit));
     }
+    */
 
     @GetMapping("/status/{status}")
     public ResponseEntity<PageResponse<Projet>> getProjetsByStatus(
@@ -128,12 +135,15 @@ public class ProjetController {
         return ResponseEntity.ok(PageResponse.of(result.getContent(), result.getTotalElements(), page, limit));
     }
 
+    // Endpoint supprimé car la relation Many-to-Many avec les citoyens a été supprimée
+    /*
     @GetMapping("/{projetId}/participants")
     public ResponseEntity<ApiResponse<List<Citoyen>>> getParticipants(
             @PathVariable Long projetId) {
         List<Citoyen> participants = projetService.getParticipants(projetId);
         return ResponseEntity.ok(ApiResponse.success("Participants récupérés", participants));
     }
+    */
 
     @GetMapping("/period")
     public ResponseEntity<PageResponse<Projet>> getProjetsByPeriod(

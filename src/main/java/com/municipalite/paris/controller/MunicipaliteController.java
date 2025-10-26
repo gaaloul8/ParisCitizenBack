@@ -2,6 +2,7 @@ package com.municipalite.paris.controller;
 
 import com.municipalite.paris.dto.response.ApiResponse;
 import com.municipalite.paris.dto.response.PageResponse;
+import com.municipalite.paris.dto.CreateMunicipaliteRequest;
 import com.municipalite.paris.entity.Municipalite;
 import com.municipalite.paris.service.MunicipaliteService;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,19 @@ public class MunicipaliteController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<Municipalite>> createMunicipalite(@RequestBody Municipalite municipalite) {
+    public ResponseEntity<ApiResponse<Municipalite>> createMunicipalite(@RequestBody CreateMunicipaliteRequest request) {
+        Municipalite municipalite = new Municipalite();
+        municipalite.setNom(request.getNom());
+        municipalite.setRegion(request.getRegion());
+        municipalite.setCodePostal(request.getCodePostal());
+        municipalite.setBudgetAnnuel(request.getBudgetAnnuel());
+        municipalite.setAdresse(request.getAdresse());
+        municipalite.setTelephone(request.getTelephone());
+        municipalite.setEmail(request.getEmail());
+        municipalite.setSiteWeb(request.getSiteWeb());
+        municipalite.setDateCreation(java.time.LocalDate.now());
+        municipalite.setStatut(Municipalite.StatutMunicipalite.ACTIVE);
+        
         Municipalite created = municipaliteService.save(municipalite);
         return ResponseEntity.ok(ApiResponse.success("Municipalité créée avec succès", created));
     }

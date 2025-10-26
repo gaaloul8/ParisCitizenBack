@@ -1,7 +1,9 @@
 package com.municipalite.paris.service.impl;
 
 import com.municipalite.paris.entity.AgentMunicipal;
+import com.municipalite.paris.entity.Projet;
 import com.municipalite.paris.repository.AgentMunicipalRepository;
+import com.municipalite.paris.repository.ProjetRepository;
 import com.municipalite.paris.service.AgentMunicipalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import java.util.List;
 public class AgentMunicipalServiceImpl implements AgentMunicipalService {
 
     private final AgentMunicipalRepository agentRepository;
+    private final ProjetRepository projetRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -81,6 +84,16 @@ public class AgentMunicipalServiceImpl implements AgentMunicipalService {
 
     @Override
     public void deleteById(Long id) {
+        AgentMunicipal agent = findById(id);
+        
+        // 1. Supprimer les projets dont cet agent est responsable (mettre responsable à null)
+        List<Projet> projetsResponsables = projetRepository.findByResponsableIdList(id);
+        for (Projet projet : projetsResponsables) {
+            projet.setResponsable(null);
+            projetRepository.save(projet);
+        }
+        
+        // 2. Supprimer l'agent (les réclamations traitées seront supprimées automatiquement grâce à cascade)
         agentRepository.deleteById(id);
     }
 

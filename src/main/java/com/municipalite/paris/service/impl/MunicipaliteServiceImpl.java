@@ -1,12 +1,19 @@
 package com.municipalite.paris.service.impl;
 
 import com.municipalite.paris.entity.Municipalite;
+import com.municipalite.paris.entity.Citoyen;
+import com.municipalite.paris.entity.AgentMunicipal;
+import com.municipalite.paris.entity.Projet;
 import com.municipalite.paris.repository.MunicipaliteRepository;
+import com.municipalite.paris.repository.CitoyenRepository;
+import com.municipalite.paris.repository.AgentMunicipalRepository;
+import com.municipalite.paris.repository.ProjetRepository;
 import com.municipalite.paris.service.MunicipaliteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import static org.springframework.data.domain.Pageable.unpaged;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +25,9 @@ import java.util.List;
 public class MunicipaliteServiceImpl implements MunicipaliteService {
 
     private final MunicipaliteRepository municipaliteRepository;
+    private final CitoyenRepository citoyenRepository;
+    private final AgentMunicipalRepository agentRepository;
+    private final ProjetRepository projetRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -60,6 +70,30 @@ public class MunicipaliteServiceImpl implements MunicipaliteService {
 
     @Override
     public void deleteById(Long id) {
+        Municipalite municipalite = findById(id);
+        
+        // 1. Supprimer tous les projets de cette municipalité
+        List<Projet> projets = projetRepository.findByMunicipaliteId(id);
+        for (Projet projet : projets) {
+            projet.setMunicipalite(null);
+            projetRepository.save(projet);
+        }
+        
+        // 2. Supprimer tous les citoyens de cette municipalité
+        List<Citoyen> citoyens = citoyenRepository.findByMunicipaliteId(id, unpaged()).getContent();
+        for (Citoyen citoyen : citoyens) {
+            citoyen.setMunicipalite(null);
+            citoyenRepository.save(citoyen);
+        }
+        
+        // 3. Supprimer tous les agents de cette municipalité
+        List<AgentMunicipal> agents = agentRepository.findByMunicipaliteId(id, unpaged()).getContent();
+        for (AgentMunicipal agent : agents) {
+            agent.setMunicipalite(null);
+            agentRepository.save(agent);
+        }
+        
+        // 4. Supprimer la municipalité
         municipaliteRepository.deleteById(id);
     }
 

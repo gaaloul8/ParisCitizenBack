@@ -71,6 +71,8 @@ public class CitoyenController {
         return ResponseEntity.ok(ApiResponse.success("Statut mis à jour", updated));
     }
 
+    // Endpoint supprimé car la relation Many-to-Many avec les projets a été supprimée
+    /*
     @GetMapping("/{id}/projets-participes")
     public ResponseEntity<ApiResponse<Long[]>> getProjetsParticipes(@PathVariable Long id) {
         // Pour l'instant, permettre l'accès sans authentification pour les tests
@@ -78,6 +80,7 @@ public class CitoyenController {
         Long[] projetIds = citoyenService.getProjetsParticipes(id);
         return ResponseEntity.ok(ApiResponse.success("Projets participés récupérés", projetIds));
     }
+    */
 
     @GetMapping("/{id}/reclamations")
     public ResponseEntity<PageResponse<Reclamation>> getReclamationsByCitoyen(

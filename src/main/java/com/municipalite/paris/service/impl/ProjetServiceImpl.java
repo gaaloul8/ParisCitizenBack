@@ -2,8 +2,13 @@ package com.municipalite.paris.service.impl;
 
 import com.municipalite.paris.entity.Citoyen;
 import com.municipalite.paris.entity.Projet;
+import com.municipalite.paris.entity.AgentMunicipal;
+import com.municipalite.paris.entity.Municipalite;
+import com.municipalite.paris.dto.CreateProjetRequest;
 import com.municipalite.paris.repository.CitoyenRepository;
 import com.municipalite.paris.repository.ProjetRepository;
+import com.municipalite.paris.repository.AgentMunicipalRepository;
+import com.municipalite.paris.repository.MunicipaliteRepository;
 import com.municipalite.paris.service.ProjetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +26,8 @@ public class ProjetServiceImpl implements ProjetService {
 
     private final ProjetRepository projetRepository;
     private final CitoyenRepository citoyenRepository;
+    private final AgentMunicipalRepository agentRepository;
+    private final MunicipaliteRepository municipaliteRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -90,12 +97,17 @@ public class ProjetServiceImpl implements ProjetService {
         return projetRepository.findByResponsableId(responsableId, pageable);
     }
 
+    // Méthode supprimée car la relation Many-to-Many avec les citoyens a été supprimée
+    /*
     @Override
     @Transactional(readOnly = true)
     public Page<Projet> findProjetsByCitoyenId(Long citoyenId, Pageable pageable) {
         return projetRepository.findProjetsByCitoyenId(citoyenId, pageable);
     }
+    */
 
+    // Méthodes supprimées car la relation Many-to-Many avec les citoyens a été supprimée
+    /*
     @Override
     public Projet addParticipant(Long projetId, Long citoyenId) {
         Projet projet = findById(projetId);
@@ -119,6 +131,7 @@ public class ProjetServiceImpl implements ProjetService {
         projet.setNombreParticipants(projet.getParticipants().size());
         return projetRepository.save(projet);
     }
+    */
 
     @Override
     @Transactional(readOnly = true)
@@ -132,11 +145,43 @@ public class ProjetServiceImpl implements ProjetService {
         return projetRepository.findByPeriod(startDate, endDate, pageable);
     }
 
+    // Méthode supprimée car la relation Many-to-Many avec les citoyens a été supprimée
+    /*
     @Override
     @Transactional(readOnly = true)
     public List<Citoyen> getParticipants(Long projetId) {
         Projet projet = findById(projetId);
         return new ArrayList<>(projet.getParticipants());
+    }
+    */
+
+    @Override
+    public Projet createProjet(CreateProjetRequest request) {
+        // Récupérer l'agent par défaut (agent@paris.fr)
+        AgentMunicipal agent = agentRepository.findByEmail("agent@paris.fr")
+                .orElseThrow(() -> new RuntimeException("Agent par défaut non trouvé"));
+        
+        // Récupérer la municipalité par défaut (ID 1)
+        Municipalite municipalite = municipaliteRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Municipalité par défaut non trouvée"));
+        
+        // Créer le projet
+        Projet projet = new Projet();
+        projet.setTitre(request.getTitre());
+        projet.setDescription(request.getDescription());
+        projet.setDateDebut(request.getDateDebut());
+        projet.setDateFin(request.getDateFin());
+        projet.setBudget(request.getBudget());
+        projet.setArrondissement(request.getArrondissement());
+        projet.setLocalisation(request.getLocalisation());
+        projet.setObjectifs(request.getObjectifs());
+        projet.setBeneficiaires(request.getBeneficiaires());
+        projet.setStatut(Projet.StatutProjet.BROUILLON);
+        projet.setResponsable(agent);
+        projet.setMunicipalite(municipalite);
+        projet.setNombreParticipants(0);
+        
+        return projetRepository.save(projet);
     }
 }
 

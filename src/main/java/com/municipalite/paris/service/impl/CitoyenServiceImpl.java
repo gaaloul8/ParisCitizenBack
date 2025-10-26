@@ -4,6 +4,7 @@ import com.municipalite.paris.entity.Citoyen;
 import com.municipalite.paris.entity.Projet;
 import com.municipalite.paris.entity.Reclamation;
 import com.municipalite.paris.repository.CitoyenRepository;
+import com.municipalite.paris.repository.ProjetRepository;
 import com.municipalite.paris.service.CitoyenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.util.List;
 public class CitoyenServiceImpl implements CitoyenService {
 
     private final CitoyenRepository citoyenRepository;
+    private final ProjetRepository projetRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -86,6 +88,25 @@ public class CitoyenServiceImpl implements CitoyenService {
 
     @Override
     public void deleteById(Long id) {
+        Citoyen citoyen = findById(id);
+        
+        // 1. Supprimer les projets créés par ce citoyen (mettre createur à null)
+        List<Projet> projetsCrees = projetRepository.findByCreateurId(id);
+        for (Projet projet : projetsCrees) {
+            projet.setCreateur(null);
+            projetRepository.save(projet);
+        }
+        
+        // 2. Supprimer manuellement les entrées de la table projets_citoyens si elle existe encore
+        try {
+            // Cette requête SQL directe supprime les relations dans la table de liaison
+            citoyenRepository.deleteProjetCitoyenRelations(id);
+        } catch (Exception e) {
+            // Si la table n'existe pas ou s'il y a une erreur, on continue
+            System.out.println("Table projets_citoyens n'existe pas ou erreur lors de la suppression des relations: " + e.getMessage());
+        }
+        
+        // 3. Supprimer le citoyen (les réclamations et feedbacks seront supprimés automatiquement grâce à cascade)
         citoyenRepository.deleteById(id);
     }
 
@@ -108,6 +129,8 @@ public class CitoyenServiceImpl implements CitoyenService {
         return citoyenRepository.findByStatut(statut, pageable);
     }
 
+    // Méthode supprimée car la relation Many-to-Many avec les projets a été supprimée
+    /*
     @Override
     @Transactional(readOnly = true)
     public Long[] getProjetsParticipes(Long citoyenId) {
@@ -116,6 +139,7 @@ public class CitoyenServiceImpl implements CitoyenService {
                 .map(Projet::getId)
                 .toArray(Long[]::new);
     }
+    */
 
     @Override
     @Transactional(readOnly = true)

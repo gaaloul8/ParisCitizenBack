@@ -19,7 +19,8 @@ public interface CitoyenService {
     Citoyen updateStatut(Long id, Citoyen.StatutCitoyen statut);
     Page<Citoyen> findByMunicipaliteId(Long municipaliteId, Pageable pageable);
     Page<Citoyen> findByStatut(Citoyen.StatutCitoyen statut, Pageable pageable);
-    Long[] getProjetsParticipes(Long citoyenId);
+    // Méthode supprimée car la relation Many-to-Many avec les projets a été supprimée
+    // Long[] getProjetsParticipes(Long citoyenId);
     
     Page<Reclamation> getReclamationsByCitoyen(Long citoyenId, Pageable pageable);
 }

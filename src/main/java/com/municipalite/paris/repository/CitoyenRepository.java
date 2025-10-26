@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,11 @@ public interface CitoyenRepository extends JpaRepository<Citoyen, Long> {
     
     @Query("SELECT c FROM Citoyen c WHERE c.age BETWEEN :minAge AND :maxAge")
     Page<Citoyen> findByAgeRange(@Param("minAge") Integer minAge, @Param("maxAge") Integer maxAge, Pageable pageable);
+    
+    // Méthode pour supprimer les relations dans la table projets_citoyens si elle existe encore
+    @Modifying
+    @Query(value = "DELETE FROM projets_citoyens WHERE citoyen_id = :citoyenId", nativeQuery = true)
+    void deleteProjetCitoyenRelations(@Param("citoyenId") Long citoyenId);
 }
 
 

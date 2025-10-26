@@ -7,3 +7,7 @@ ALTER TABLE projets MODIFY COLUMN statut VARCHAR(50) NOT NULL;
 
 
 
+
+
+
+

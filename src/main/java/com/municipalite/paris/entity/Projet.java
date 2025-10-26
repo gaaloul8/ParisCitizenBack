@@ -93,15 +93,15 @@ public class Projet {
     @Column(length = 50)
     private String categorie;
 
-    // Relation Many-to-Many avec Citoyen
-    @ManyToMany
-    @JoinTable(
-        name = "projets_citoyens",
-        joinColumns = @JoinColumn(name = "projet_id"),
-        inverseJoinColumns = @JoinColumn(name = "citoyen_id")
-    )
-    @JsonIgnore
-    private List<Citoyen> participants = new ArrayList<>();
+    // Relation Many-to-Many avec Citoyen - SUPPRIMÉE
+    // @ManyToMany
+    // @JoinTable(
+    //     name = "projets_citoyens",
+    //     joinColumns = @JoinColumn(name = "projet_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "citoyen_id")
+    // )
+    // @JsonIgnore
+    // private List<Citoyen> participants = new ArrayList<>();
 
     // Relation avec le créateur (citoyen)
     @ManyToOne(fetch = FetchType.LAZY)
