@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/municipalites")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class MunicipaliteController {
 
     private final MunicipaliteService municipaliteService;

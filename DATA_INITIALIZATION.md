@@ -111,3 +111,5 @@ Ces données permettent de :
 - Tester les modals de détail et d'édition
 - Vérifier les statistiques et analytics
 - Simuler un environnement de production réaliste
+
+

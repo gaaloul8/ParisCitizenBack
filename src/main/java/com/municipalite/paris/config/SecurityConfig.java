@@ -13,6 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -25,21 +31,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/etablissements/**").permitAll() // Public access
-                        .requestMatchers("/api/v1/projets/**").permitAll() // Public access
+                        .requestMatchers("/api/v1/etablissements/**").permitAll()
+                        .requestMatchers("/api/v1/projets/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admins/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/municipalites/**").permitAll() // Public access for municipalites
-                        .requestMatchers("/api/v1/agents/**").permitAll() // Public access for agents list
-                        .requestMatchers("/api/v1/citoyens/{id}/projets-participes").permitAll() // Public access for participation check
-                        .requestMatchers("/api/v1/citoyens/{id}/reclamations").permitAll() // Public access for citizen's reclamations
-                        .requestMatchers("/api/v1/citoyens/**").permitAll() // Temporaire - permettre l'accès sans auth pour les tests
-                        .requestMatchers("/api/v1/reclamations/**").permitAll() // Temporaire - permettre l'accès sans auth
-                        .requestMatchers("/api/v1/reclamations-simple/**").permitAll() // Endpoint simplifié pour les réclamations
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -47,10 +46,28 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://pariscitizenbackend:4200",
+                "http://48.194.20.203:4200",
+                "http://localhost:4200",
+                "http://pariscitizenbackend:80",
+                "http://48.194.20.203:80"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
-
-

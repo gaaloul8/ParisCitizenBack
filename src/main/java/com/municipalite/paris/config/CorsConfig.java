@@ -1,4 +1,4 @@
-package com.municipalite.paris.config;
+/* package com.municipalite.paris.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,3 +44,4 @@ public class CorsConfig {
 }
 
 
+*/

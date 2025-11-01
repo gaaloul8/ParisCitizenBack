@@ -89,3 +89,5 @@ GET /api/test/stats
 ## 🎉 **Résultat Final :**
 
 **35 municipalités** créées automatiquement avec leurs vraies informations, prêtes à être utilisées dans l'application ! 🚀
+
+

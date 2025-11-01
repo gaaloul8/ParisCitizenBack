@@ -17,7 +17,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/reclamations-simple")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class ReclamationSimpleController {
 
     private final ReclamationRepository reclamationRepository;

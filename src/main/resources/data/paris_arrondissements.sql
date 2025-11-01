@@ -67,3 +67,5 @@ INSERT INTO municipalites (nom, region, code_postal, budget_annuel, adresse, tel
 -- Vérification des données insérées
 SELECT COUNT(*) as nombre_municipalites FROM municipalites;
 SELECT nom, code_postal, budget_annuel FROM municipalites ORDER BY code_postal;
+
+

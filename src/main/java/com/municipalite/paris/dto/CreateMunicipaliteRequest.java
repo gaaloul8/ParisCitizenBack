@@ -38,3 +38,5 @@ public class CreateMunicipaliteRequest {
     @Size(max = 255, message = "L'URL du site web ne peut pas dépasser 255 caractères")
     private String siteWeb;
 }
+
+

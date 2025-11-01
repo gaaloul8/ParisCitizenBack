@@ -101,3 +101,5 @@ Après création, vous pouvez vérifier que la municipalité a été ajoutée :
 1. Rafraîchir la page des municipalités
 2. Chercher la nouvelle municipalité dans la liste
 3. Cliquer sur "Voir" pour vérifier les détails
+
+

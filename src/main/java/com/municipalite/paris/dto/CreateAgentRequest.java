@@ -39,3 +39,5 @@ public class CreateAgentRequest {
     @Size(max = 150, message = "Le poste ne peut pas dépasser 150 caractères")
     private String poste;
 }
+
+

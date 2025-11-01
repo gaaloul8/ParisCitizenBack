@@ -37,3 +37,5 @@ echo "5. Arrêt du backend..."
 kill $BACKEND_PID
 
 echo "=== Test terminé ==="
+
+
